@@ -1,0 +1,94 @@
+<html>
+<head><title>Search Intercept</title>
+<link title="Search Intercept" type="application/opensearchdescription+xml" rel="search" href="opensearch.xml"/>
+<style>
+	label{display:block;}
+	#content{width:75%;margin:auto;top:36%;position:relative;}
+	form input{font-size:28px;padding:10px;border:1px solid #333;}
+	#q{width:90%;padding-left:44px;background-image:url(img/search.png);background-repeat:no-repeat;background-position:10px 10px;margin:5px 0px;}
+	#b{position:relative;left:-1px;width:10%;}
+	li{margin:50px;}
+	a{text-decoration:none;}
+	#editContainer{display:none;}
+
+	#helpContainer{display:none;}
+	ol{font-size:24px;}
+	.container{position:relative;}
+	.container.se_hover_1 input{
+		position:absolute;
+		top: 24px;
+		font-size: 12px;
+		padding: 3px 2px 4px 2px;
+		border: 1px solid #BFBFBF;
+		border-radius:2px;
+		opacity:0.1;
+	}
+	.container.se_hover_1 input:hover{
+		border: 1px solid #4D90FE;
+		opacity:1.0;
+	}
+	.container.se_hover_1 .se_name{left: 52px;width:151px;}
+	.container.se_hover_1 .se_keyword{left: 210px;width:156px;}
+	.container.se_hover_1 .se_url{left: 373px;width:275px;}
+
+	.container.se_hover_2 input{
+		position:absolute;
+		top: 6px;
+		font-size: 12px;
+		padding: 3px 2px 4px 2px;
+		border: 1px solid #BFBFBF;
+	}
+	.container.se_hover_2 input:hover{
+		border: 1px solid #4D90FE;
+	}
+	.container.se_hover_2 .se_name{left: 41px;width:151px;}
+	.container.se_hover_2 .se_keyword{left: 198px;width:157px;}
+	.container.se_hover_2 .se_url{left: 361px;width:184px;}
+</style>
+<script src="Cr_min.js"></script>
+<script src="options.js"></script>
+
+</head>
+<body>
+
+<div id="content">
+	<b>Search</b>
+
+	<span id="selectContainer"></span> <a href="#" id="editTrigger">+</a><div id="editContainer">yoyoyo</div>
+	<br>
+
+	<form action="https://www.google.com/search" method="GET" id="searchForm">
+		<input type="search" id="q" name="q"><input id="b" type="submit" value="Go">
+	</form>
+	
+	<a href="#" id="helpTrigger">help</a><div id="helpContainer">&#9660;
+		<ol>
+			<li>
+				Edit<br/><img src="img/help/edit-search-engines.jpg" />
+			</li>
+			<li>
+				Add
+				<div class="container se_hover_1">
+					<input class="autoselect se_name" type="text" value="Intercept" />
+					<input class="autoselect se_keyword" type="text" value="intercept" />
+					<input class="autoselect se_url" type="text" value="chrome-extension://ehbejnhageklibachmenkkefnpmmcbee/options.html?q=%s" />
+					<img src="img/help/enter-new-engine.png" />
+				</div>
+			</li>
+			<li>
+				Make Default
+				<div class="container se_hover_2">
+					<input class="autoselect se_name" type="text" value="Intercept" />
+					<input class="autoselect se_keyword" type="text" value="intercept" />
+					<input class="autoselect se_url" type="text" value="chrome-extension://ehbejnhageklibachmenkkefnpmmcbee/options.html?q=%s" />
+					<img src="img/help/make-default.png" />
+				</div>
+			</li>
+			<li>
+				Finally<br/><img src="img/help/enjoy.png" />
+			</li>
+		</ol>
+	</div>
+</div>
+</body>
+</html>
