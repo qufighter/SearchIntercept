@@ -4,6 +4,6 @@
 	<Description>Intercept url bar search</Description>
 	<Tags>intercept</Tags>
 	<InputEncoding>UTF-8</InputEncoding>
-	<Image height="16" width="16" type="image/png">chrome-extension://ehbejnhageklibachmenkkefnpmmcbee/img/icon16.png</Image>
-	<Url type="text/html" template="chrome-extension://ehbejnhageklibachmenkkefnpmmcbee/options.html?q={searchTerms}"/>
+	<Image height="16" width="16" type="image/png">chrome-extension://jjfgbecjclgohddmigohdoaoedeghmlp/img/icon16.png</Image>
+	<Url type="text/html" template="chrome-extension://jjfgbecjclgohddmigohdoaoedeghmlp/options.html?q={searchTerms}"/>
 </OpenSearchDescription>
