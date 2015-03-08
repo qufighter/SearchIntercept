@@ -11,9 +11,18 @@
 	a{text-decoration:none;}
 	#editContainer{display:none;}
 
+	.hint{color:grey;font-size:10px;}
+	.engineurl{width:580px;}
+
+	#helpContainer .hint{
+		position:relative;
+		top:-10px;
+		font-size:12px;
+		color:#CD7900;
+	}
 	#helpContainer{display:none;}
 	ol{font-size:24px;}
-	.container{position:relative;}
+	.container{position:relative;margin-top:10px;}
 	.container.se_hover_1 input{
 		position:absolute;
 		top: 24px;
@@ -54,20 +63,30 @@
 <div id="content">
 	<b>Search</b>
 
-	<span id="selectContainer"></span> <a href="#" id="editTrigger">+</a><div id="editContainer">yoyoyo</div>
+	<span id="selectContainer"></span>
+	<a href="#" id="editTrigger" showText="+" hideText="-">+</a><div id="editContainer">
+		<div id="savedEngines">[listing]</div>
+		<input type="button" id="addEngine" value="Add"/>
+		<div>
+			Private Words <input id="noAutoSearchPattern" type="text" value="" />
+			<span class="hint">When search term contains any of these words do not select the search field. example: private|words</span>
+		</div>
+		<input type="button" id="saveEngines" value="Save"/>
+	</div>
 	<br>
 
 	<form action="https://www.google.com/search" method="GET" id="searchForm">
 		<input type="search" id="q" name="q"><input id="b" type="submit" value="Go">
 	</form>
-	
-	<a href="#" id="helpTrigger">help</a><div id="helpContainer">&#9660;
+
+	<a href="#" id="helpTrigger" showText="show setup instructions" hideText="hide setup instructions">setup</a><div id="helpContainer">&#9660;
 		<ol>
 			<li>
-				Edit<br/><img src="img/help/edit-search-engines.jpg" />
+				Edit <span class="hint">then return to this tab to copy configuration</span>
+				<br/><img src="img/help/edit-search-engines.png" />
 			</li>
 			<li>
-				Add
+				Add <span class="hint">hover to see intercept configuration values, copy and paste to the bottom of "Edit Search Engines..." tab</span>
 				<div class="container se_hover_1">
 					<input class="autoselect se_name" type="text" value="Intercept" />
 					<input class="autoselect se_keyword" type="text" value="intercept" />
@@ -76,7 +95,8 @@
 				</div>
 			</li>
 			<li>
-				Make Default
+				Make Default <span class="hint">click next to done, then before clicking done:</span>
+				<span class="hint" style="display:inline-block;text-align:right;width:202px;">&darr; Over Here &darr;</span>
 				<div class="container se_hover_2">
 					<input class="autoselect se_name" type="text" value="Intercept" />
 					<input class="autoselect se_keyword" type="text" value="intercept" />
@@ -85,7 +105,12 @@
 				</div>
 			</li>
 			<li>
-				Finally<br/><img src="img/help/enjoy.png" />
+				Configure <span class="hint">Disable other settings that send search terms early</span>
+				<br/><img src="img/help/other-settings.png" />
+			</li>
+			<li>
+				Finally <span class="hint">URL bar entries that result in searches won't leave your computer until you are ready!</span>
+				<br/><img src="img/help/enjoy.png" />
 			</li>
 		</ol>
 	</div>

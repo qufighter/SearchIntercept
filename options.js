@@ -1,20 +1,45 @@
 // shared functions (help page and other)
 
 function toggleNextSiblingVisiblity(ev){
-    var sib = ev.target.nextSibling;
+    var slf = ev.target;
+    var sib = slf.nextSibling;
     if( sib.style.display == 'block' ){
         sib.style.display = 'none';
+        if( slf.getAttribute('showText') ) slf.innerText=slf.getAttribute('showText');
     }else{
         sib.style.display = 'block';
+        if( slf.getAttribute('hideText') ) slf.innerText=slf.getAttribute('hideText');
+        sib.scrollIntoViewIfNeeded();
     }
-    ev.preventDefault();
+    if(ev.preventDefault)ev.preventDefault();
 }
 
-var noAutoSearchPattern = 'private|words';
+var noAutoSearchPattern = '';
 var searchEngines=[
     {name:'Google', url: 'https://www.google.com/search?q=%s'},
     {name:'Bing', url: 'https://www.bing.com/search?q=%s'}
 ];
+
+if( localStorage.searchEngines && localStorage.searchEngines.length ){
+    try{
+        var newEng = JSON.parse(localStorage.searchEngines);
+        if( newEng.length ){
+            searchEngines = newEng;
+        }
+    }catch(e){
+        console.log('json parse error searchEngines');
+    }
+}
+
+if( localStorage.noAutoSearchPattern ){
+    noAutoSearchPattern = localStorage.noAutoSearchPattern;
+}
+
+function loadSearchEngineSelect(){
+    Cr.empty(document.getElementById('selectContainer'));
+    var selEng = Cr.elm('select',{id:'selectedEngine'},searchEngineOptions(),document.getElementById('selectContainer'));
+    if(localStorage.lastLoc) selEng.value = localStorage.lastLoc;
+}
 
 function searchEngineOptions(){
     var seo = [];
@@ -31,9 +56,45 @@ function searchEngineOptions(){
     return seo;
 }
 
+function applyPlaceholder(e){
+    if( e.target.value==='' ){
+        console.log('attrPlaceholder', e.target.getAttribute('placeholder') );
+    }
+}
+
+function saveSearchEngines(){
+    var engElm = document.getElementById('savedEngines');
+    var newEngines = [], n, u;
+    for(var i=0,l=engElm.childNodes.length; i<l; i++ ){
+        n = engElm.childNodes[i].querySelector('.enginename').value;
+        u = engElm.childNodes[i].querySelector('.engineurl').value;
+        if( n && u ) newEngines.push({'name': n, 'url': u});
+    }
+    if( newEngines.length ) searchEngines = newEngines;
+    noAutoSearchPattern =  document.getElementById('noAutoSearchPattern').value;
+    localStorage.searchEngines = JSON.stringify(searchEngines);
+    localStorage.noAutoSearchPattern = noAutoSearchPattern;
+    loadSearchEngineSelect();
+    toggleNextSiblingVisiblity({target:engElm.parentNode.previousSibling});
+}
+
+function createEditRow(engine, dest){
+    Cr.elm('div',{class:''},[
+        Cr.elm('input', {value:engine.name,placeholder:'Name', class: 'enginename'}),
+        Cr.elm('input', {value:engine.url, placeholder:'Search URL Pattern', class: 'engineurl'})
+    ], dest);
+}
+
 function editSearchEngineOptions(ev){
     toggleNextSiblingVisiblity(ev);
+    var engElm = document.getElementById('savedEngines');
+    Cr.empty(engElm);
+    for( var e=0,el=searchEngines.length; e<el; e++ ){
+        createEditRow(searchEngines[e], engElm);
+    }
+    document.getElementById('noAutoSearchPattern').value = noAutoSearchPattern;
 }
+
 
 document.addEventListener('DOMContentLoaded', function () {
     var h = window.location.href;
@@ -46,9 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    Cr.empty(document.getElementById('selectContainer'));
-    var selEng = Cr.elm('select',{id:'selectedEngine'},searchEngineOptions(),document.getElementById('selectContainer'));
-    if(localStorage.lastLoc) selEng.value = localStorage.lastLoc;
+    loadSearchEngineSelect();
 
     document.getElementById('searchForm').addEventListener('submit',function(ev){
         localStorage.lastLoc = document.getElementById('selectedEngine').value;
@@ -57,6 +116,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('editTrigger').addEventListener('click',editSearchEngineOptions);
+    document.getElementById('saveEngines').addEventListener('click',saveSearchEngines);
+    document.getElementById('addEngine').addEventListener('click',function(){createEditRow({name:'',url:''}, document.getElementById('savedEngines'))});
 
     //help page stuff
 
