@@ -2,7 +2,6 @@
 <head><title>Search Intercept</title>
 <link title="Search Intercept" type="application/opensearchdescription+xml" rel="search" href="opensearch.xml"/>
 <style>
-	label{display:block;}
 	#content{width:75%;margin:auto;top:36%;position:relative;}
 	form input{font-size:28px;padding:10px;border:1px solid #333;}
 	#q{width:90%;padding-left:44px;background-image:url(img/search.png);background-repeat:no-repeat;background-position:10px 10px;margin:5px 0px;}
@@ -12,7 +11,7 @@
 	#editContainer{display:none;}
 
 	.hint{color:grey;font-size:10px;}
-	.engineurl{width:580px;}
+	.engineurl{width:63%;}
 
 	#helpContainer .hint{
 		position:relative;
@@ -64,12 +63,16 @@
 	<b>Search</b>
 
 	<span id="selectContainer"></span>
-	<a href="#" id="editTrigger" showText="+" hideText="-">+</a><div id="editContainer">
+	<a href="#" id="editTrigger" showText="+" hideText="- cancel editing">+</a><div id="editContainer">
 		<div id="savedEngines">[listing]</div>
 		<input type="button" id="addEngine" value="Add"/>
 		<div>
 			Private Words <input id="noAutoSearchPattern" type="text" value="" />
 			<span class="hint">When search term contains any of these words do not select the search field. example: private|words</span>
+		</div>
+		<div>
+			<label><input type="checkbox" id="rememberLastLocation" /> Save Search Engine</label>
+			<span class="hint">Next time you search always select the engine used the time before</span>
 		</div>
 		<input type="button" id="saveEngines" value="Save"/>
 	</div>

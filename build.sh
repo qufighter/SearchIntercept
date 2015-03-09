@@ -24,7 +24,7 @@ cp -r * build/1.0  2> /dev/null
 echo "cleaning up"
 #remove any build folder in build folder and build.sh
 rm -fr build/1.0/build*
-rm -fr build/1.0/*.psd
+rm -fr build/1.0/resources
 rm -fr build/1.0/$PROG.*.zip
 
 echo "determining version number"

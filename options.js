@@ -14,6 +14,7 @@ function toggleNextSiblingVisiblity(ev){
     if(ev.preventDefault)ev.preventDefault();
 }
 
+var rememberLastLocation = true;
 var noAutoSearchPattern = '';
 var searchEngines=[
     {name:'Google', url: 'https://www.google.com/search?q=%s'},
@@ -33,6 +34,10 @@ if( localStorage.searchEngines && localStorage.searchEngines.length ){
 
 if( localStorage.noAutoSearchPattern ){
     noAutoSearchPattern = localStorage.noAutoSearchPattern;
+}
+
+if( localStorage.rememberLastLocation == 'false' ){
+    rememberLastLocation = false;
 }
 
 function loadSearchEngineSelect(){
@@ -72,8 +77,11 @@ function saveSearchEngines(){
     }
     if( newEngines.length ) searchEngines = newEngines;
     noAutoSearchPattern =  document.getElementById('noAutoSearchPattern').value;
+    rememberLastLocation = document.getElementById('rememberLastLocation').checked;
     localStorage.searchEngines = JSON.stringify(searchEngines);
     localStorage.noAutoSearchPattern = noAutoSearchPattern;
+    localStorage.lastLoc = document.getElementById('selectedEngine').value;
+    localStorage.rememberLastLocation = rememberLastLocation ? 'true' : 'false';
     loadSearchEngineSelect();
     toggleNextSiblingVisiblity({target:engElm.parentNode.previousSibling});
 }
@@ -87,12 +95,14 @@ function createEditRow(engine, dest){
 
 function editSearchEngineOptions(ev){
     toggleNextSiblingVisiblity(ev);
+    document.getElementById('content').style.top='15%';
     var engElm = document.getElementById('savedEngines');
     Cr.empty(engElm);
     for( var e=0,el=searchEngines.length; e<el; e++ ){
         createEditRow(searchEngines[e], engElm);
     }
     document.getElementById('noAutoSearchPattern').value = noAutoSearchPattern;
+    document.getElementById('rememberLastLocation').checked = rememberLastLocation;
 }
 
 
@@ -110,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
     loadSearchEngineSelect();
 
     document.getElementById('searchForm').addEventListener('submit',function(ev){
-        localStorage.lastLoc = document.getElementById('selectedEngine').value;
+        if( rememberLastLocation ) localStorage.lastLoc = document.getElementById('selectedEngine').value;
         window.location = document.getElementById('selectedEngine').value.replace('%s', encodeURIComponent(document.getElementById('q').value).replace(/%20/g, '+'));
         ev.preventDefault();
     });
