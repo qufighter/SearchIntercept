@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var s = h.indexOf('q=');
     if( s > -1 ){
         var s = decodeURIComponent(h.substr(s+2).replace(/\+/g,' '));
-        document.getElementById('q').value=s;
+        document.getElementById('q').value=s+' ';
         if( !s.match(new RegExp(noAutoSearchPattern, 'gi')) ){
             document.getElementById('q').select();
         }
