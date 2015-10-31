@@ -3,16 +3,20 @@
 <link title="Search Intercept" type="application/opensearchdescription+xml" rel="search" href="opensearch.xml"/>
 <style>
 	#content{width:75%;margin:auto;top:36%;position:relative;}
-	form input{font-size:28px;padding:10px;border:1px solid #333;}
-	#q{width:90%;padding-left:44px;background-image:url(img/search.png);background-repeat:no-repeat;background-position:10px 10px;margin:5px 0px;}
-	#b{position:relative;left:-1px;width:10%;}
+	form{margin:5px 0px;position:relative;}
+	form input{font-size:28px;padding:10px;border:1px solid #333;margin:0px;}
+	#q{width:90%;padding-left:44px;background-image:url(img/search.png);background-repeat:no-repeat;background-position:10px 10px;}
+	#b{position:relative;left:-1px;top:0px;width:10%;}
 	li{margin:50px;}
 	a{text-decoration:none;}
 	#editContainer{display:none;}
 
 	.hint{color:grey;font-size:10px;}
 	.engineurl{width:63%;}
-
+	#treatAsLocation{
+		float:right;
+		margin-right:2%;
+	}
 	#helpContainer .hint{
 		position:relative;
 		top:-10px;
@@ -52,6 +56,10 @@
 	.container.se_hover_2 .se_name{left: 41px;width:151px;}
 	.container.se_hover_2 .se_keyword{left: 198px;width:157px;}
 	.container.se_hover_2 .se_url{left: 361px;width:184px;}
+@media only screen and (max-width : 846px){
+	#q{width:100%;}
+	#b{position:absolute;left:auto;right:0px;width:auto;}
+}
 </style>
 <script src="Cr_min.js"></script>
 <script src="options.js"></script>
@@ -63,12 +71,12 @@
 	<b>Search</b>
 
 	<span id="selectContainer"></span>
-	<a href="#" id="editTrigger" showText="+" hideText="- cancel editing">+</a><div id="editContainer">
+	<a href="#" id="editTrigger" showText="+" hideText="- cancel editing" title="Toggle search engine editor">+</a><div id="editContainer">
 		<div id="savedEngines">[listing]</div>
-		<input type="button" id="addEngine" value="Add"/>
+		<input type="button" id="addEngine" value="Add"/> <a href="#reset" id="reset">reset</a>
 		<div>
 			Private Words <input id="noAutoSearchPattern" type="text" value="" />
-			<span class="hint">When search term contains any of these words do not select the search field. example: private|words</span>
+			<span class="hint">When search term contains any of regex capable words do not select the search field. example: private|words</span>
 		</div>
 		<div>
 			<label><input type="checkbox" id="rememberLastLocation" /> Save Search Engine</label>
@@ -82,10 +90,12 @@
 		<input type="search" id="q" name="q"><input id="b" type="submit" value="Go">
 	</form>
 
+	<a href="#" id="treatAsLocation">navigate to</a>
+
 	<a href="#" id="helpTrigger" showText="show setup instructions" hideText="hide setup instructions">setup</a><div id="helpContainer">&#9660;
 		<ol>
 			<li>
-				Edit <span class="hint">then return to this tab to copy configuration</span>
+				Edit Search Engines <span class="hint">then return to this tab to copy configuration</span>
 				<br/><img src="img/help/edit-search-engines.png" />
 			</li>
 			<li>
@@ -98,7 +108,7 @@
 				</div>
 			</li>
 			<li>
-				Make Default <span class="hint">click next to done, then before clicking done:</span>
+				Make Default <span class="hint">click next to or near to done, then before clicking done:</span>
 				<span class="hint" style="display:inline-block;text-align:right;width:202px;">&darr; Over Here &darr;</span>
 				<div class="container se_hover_2">
 					<input class="autoselect se_name" type="text" value="Intercept" />

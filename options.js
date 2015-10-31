@@ -18,7 +18,11 @@ var rememberLastLocation = true;
 var noAutoSearchPattern = '';
 var searchEngines=[
     {name:'Google', url: 'https://www.google.com/search?q=%s'},
-    {name:'Bing', url: 'https://www.bing.com/search?q=%s'}
+    {name:'Bing', url: 'https://www.bing.com/search?q=%s'},
+    {name:'DuckDuckGo', url: 'https://duckduckgo.com/?q=%s'},
+    {name:'Yahoo', url: 'https://search.yahoo.com/search?p=%s'},
+    {name:'Ask', url: 'http://www.ask.com/web?q=%s'},
+    {name:'Amazon', url: 'http://amazon.com/s?tag=a2d5nfn4elbes-20&field-keywords=%s'}
 ];
 
 if( localStorage.searchEngines && localStorage.searchEngines.length ){
@@ -67,6 +71,14 @@ function applyPlaceholder(e){
     }
 }
 
+function resetSearchEngines(ev){
+    ev.preventDefault();
+    if( confirm("Warning - this will delete all search engines above and reset to factory default ~5 search engines.\n\nAre you sure?") ){
+        localStorage.searchEngines = null;
+        window.location.reload();
+    }
+}
+
 function saveSearchEngines(){
     var engElm = document.getElementById('savedEngines');
     var newEngines = [], n, u;
@@ -105,6 +117,16 @@ function editSearchEngineOptions(ev){
     document.getElementById('rememberLastLocation').checked = rememberLastLocation;
 }
 
+function treatEntryAsLoc(ev){
+    ev.preventDefault();
+    dest = document.getElementById('q').value.replace(/\s/g,'');
+    if( dest.indexOf('://') < 1 ){
+        dest="http://"+dest;
+    }
+    if( confirm('window.location = "'+dest+'" ?'+"\n\nThis will attempt to navigate to the URL shown above.") ){
+        window.location=dest;
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     var h = window.location.href;
@@ -112,7 +134,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if( s > -1 ){
         var s = decodeURIComponent(h.substr(s+2).replace(/\+/g,' '));
         document.getElementById('q').value=s+' ';
-        if( !s.match(new RegExp(noAutoSearchPattern, 'gi')) ){
+        if( !noAutoSearchPattern || !s.match(new RegExp(noAutoSearchPattern, 'gi')) ){
+            document.getElementById('q').focus();
             document.getElementById('q').select();
         }
     }
@@ -124,10 +147,12 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location = document.getElementById('selectedEngine').value.replace('%s', encodeURIComponent(document.getElementById('q').value).replace(/%20/g, '+'));
         ev.preventDefault();
     });
+    document.getElementById('treatAsLocation').addEventListener('click',treatEntryAsLoc);
 
     document.getElementById('editTrigger').addEventListener('click',editSearchEngineOptions);
     document.getElementById('saveEngines').addEventListener('click',saveSearchEngines);
     document.getElementById('addEngine').addEventListener('click',function(){createEditRow({name:'',url:''}, document.getElementById('savedEngines'))});
+    document.getElementById('reset').addEventListener('click',resetSearchEngines);
 
     //help page stuff
 
