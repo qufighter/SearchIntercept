@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('searchForm').addEventListener('submit',function(ev){
         if( rememberLastLocation ) localStorage.lastLoc = document.getElementById('selectedEngine').value;
-        window.location = document.getElementById('selectedEngine').value.replace('%s', encodeURIComponent(document.getElementById('q').value).replace(/%20/g, '+'));
+        window.location = document.getElementById('selectedEngine').value.replace('%s', encodeURIComponent(document.getElementById('q').value.replace(/\s+$/, '')).replace(/%20/g, '+'));
         ev.preventDefault();
     });
     document.getElementById('treatAsLocation').addEventListener('click',treatEntryAsLoc);
