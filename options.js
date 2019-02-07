@@ -16,6 +16,7 @@ function toggleNextSiblingVisiblity(ev){
 
 var rememberLastLocation = true;
 var noAutoSearchPattern = '';
+var alwaysAutoGoPattern = '';
 var searchEngines=[
     {name:'Google', url: 'https://www.google.com/search?q=%s'},
     {name:'Bing', url: 'https://www.bing.com/search?q=%s'},
@@ -38,6 +39,10 @@ if( localStorage.searchEngines && localStorage.searchEngines.length ){
 
 if( localStorage.noAutoSearchPattern ){
     noAutoSearchPattern = localStorage.noAutoSearchPattern;
+}
+
+if( localStorage.alwaysAutoGoPattern ){
+    alwaysAutoGoPattern = localStorage.alwaysAutoGoPattern;
 }
 
 if( localStorage.rememberLastLocation == 'false' ){
@@ -89,9 +94,11 @@ function saveSearchEngines(){
     }
     if( newEngines.length ) searchEngines = newEngines;
     noAutoSearchPattern =  document.getElementById('noAutoSearchPattern').value;
+    alwaysAutoGoPattern =  document.getElementById('alwaysAutoGoPattern').value;
     rememberLastLocation = document.getElementById('rememberLastLocation').checked;
     localStorage.searchEngines = JSON.stringify(searchEngines);
     localStorage.noAutoSearchPattern = noAutoSearchPattern;
+    localStorage.alwaysAutoGoPattern = alwaysAutoGoPattern;
     localStorage.lastLoc = document.getElementById('selectedEngine').value;
     localStorage.rememberLastLocation = rememberLastLocation ? 'true' : 'false';
     loadSearchEngineSelect();
@@ -114,6 +121,7 @@ function editSearchEngineOptions(ev){
         createEditRow(searchEngines[e], engElm);
     }
     document.getElementById('noAutoSearchPattern').value = noAutoSearchPattern;
+    document.getElementById('alwaysAutoGoPattern').value = alwaysAutoGoPattern;
     document.getElementById('rememberLastLocation').checked = rememberLastLocation;
 }
 
@@ -129,14 +137,27 @@ function treatEntryAsLoc(ev){
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+
+
     var h = window.location.href;
     var s = h.indexOf('q=');
     if( s > -1 ){
         var s = decodeURIComponent(h.substr(s+2).replace(/\+/g,' '));
-        document.getElementById('q').value=s+' ';
-        if( !noAutoSearchPattern || !s.match(new RegExp(noAutoSearchPattern, 'gi')) ){
-            document.getElementById('q').focus();
-            document.getElementById('q').select();
+        console.log(s, alwaysAutoGoPattern, s.match(alwaysAutoGoPattern));
+        var goPattern = s.match(alwaysAutoGoPattern);
+        if( goPattern && goPattern[0] ){
+            if( s.match(/^http/) ){
+                window.location = s;
+            }else{
+                window.location = 'http://'+s; // if we got somethign we just go!
+            }
+            return;
+        }else{
+            document.getElementById('q').value=s+' ';
+            if( !noAutoSearchPattern || !s.match(new RegExp(noAutoSearchPattern, 'gi')) ){
+                document.getElementById('q').focus();
+                document.getElementById('q').select();
+            }
         }
     }
 

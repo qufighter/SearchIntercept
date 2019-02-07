@@ -56,6 +56,9 @@
 	.container.se_hover_2 .se_name{left: 41px;width:151px;}
 	.container.se_hover_2 .se_keyword{left: 198px;width:157px;}
 	.container.se_hover_2 .se_url{left: 361px;width:184px;}
+	.mono{
+		font-family:monospace;
+	}
 @media only screen and (max-width : 846px){
 	#q{width:100%;}
 	#b{position:absolute;left:auto;right:0px;width:auto;}
@@ -76,8 +79,13 @@
 		<input type="button" id="addEngine" value="Add"/> <a href="#reset" id="reset">reset</a>
 		<div>
 			Private Words <input id="noAutoSearchPattern" type="text" value="" />
-			<span class="hint">When search term contains any of regex capable words do not select the search field. example: private|words</span>
+			<span class="hint">When search term contains any of regex capable words do not select the search field. Example: <span class="mono">private|words</span></span>
 		</div>
+		<div>
+			Trusted Domains <input id="alwaysAutoGoPattern" type="text" value="" />
+			<span class="hint">Instaed of searching we "navigate to" any that matches the expression.  Example: <span class="mono">.tld$|.example$|.mycom$</span></span>
+		</div>
+
 		<div>
 			<label><input type="checkbox" id="rememberLastLocation" /> Save Search Engine</label>
 			<span class="hint">Next time you search always select the engine used the time before</span>
