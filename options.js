@@ -140,7 +140,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var h = window.location.href;
     var s = h.indexOf('q=');
     if( s > -1 ){
-        var s = decodeURIComponent(h.substr(s+2).replace(/\+/g,' '));
+        var s = h.substr(s+2).replace(/\+/g,' ');
+        try{
+            s = decodeURIComponent(s);
+        }catch(e){
+            console.error(e, s);
+        }
         document.getElementById('q').value=s+' ';
         if( !noAutoSearchPattern || !s.match(new RegExp(noAutoSearchPattern, 'gi')) ){
             var goPattern = s.match(alwaysAutoGoPattern);
@@ -174,8 +179,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //help page stuff
 
-    var as=document.getElementsByClassName('autoselect');
-    for( var asi=0,asl=as.length;asi<asl;asi++ ){
+    var as,asi,asl;
+
+    // use the right ext ID...
+    if( chrome.runtime && chrome.runtime.id ){
+        var seUrl = 'chrome-extension://'+chrome.runtime.id+'/options.html?q=%s';
+        as=document.getElementsByClassName('se_url');
+        for( asi=0,asl=as.length;asi<asl;asi++ ){
+            as[asi].value = seUrl;
+        }
+    }
+
+    as=document.getElementsByClassName('autoselect');
+    for( asi=0,asl=as.length;asi<asl;asi++ ){
         (function(elm, origv){
             elm.addEventListener('mouseover',function(ev){
                 ev.target.value=origv; // in case they choose cut instead of copy the value will be preserved
