@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "description": "Intercept outgoing google search!",
   "name": "Search Intercept",
   "options_page": "options.html",
